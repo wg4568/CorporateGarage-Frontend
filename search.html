@@ -29,7 +29,8 @@
 	<script src="js/jquery.js"></script>
 	<script src="js/bootstrap.js"></script>
 	<script src="js/tether.js"></script>
-    <script src="js/api.js"></script>
+	<script src="js/api.js"></script>
+	<script src="js/keepuuid.js"></script>
 
 </head>
 
@@ -191,7 +192,7 @@
               element_img.src = tmp[i]["thumbnail"];
               element_title.innerText = tmp[i]["name"];
               element_description.innerText = tmp[i]["description"];
-              element_url.href = "project.html?project=" + tmp[i]["id"];
+              element_url.href = "project.html?project=" + tmp[i]["id"] + "&uuid=" + UUID;
             }
             if(tmp.length < 6 || size <= 6 * page_id)
             {
