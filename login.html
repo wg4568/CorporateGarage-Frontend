@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>CorporateGarage - User Login</title>
+
+    <link href="css/bootstrap.css" rel="stylesheet">
+    <link href="css/login.css" rel="stylesheet">
+
+    <script src="js/jquery.js"></script>
+    <script src="js/tether.js"></script>
+    <script src="js/bootstrap.js"></script>
+    <script src="js/api.js"></script>
+
+    <style>
+    .navbar-toggler {
+        z-index: 1;
+    }
+
+    @media (max-width: 576px) {
+        nav > .container {
+            width: 100%;
+        }
+    }
+    </style>
+
+</head>
+
+<body>
+
+    <!-- Navigation -->
+    <nav class="navbar fixed-top navbar-toggleable-md navbar-inverse bg-inverse">
+        <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarExample" aria-controls="navbarExample" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="container">
+            <a class="navbar-brand" href="#">Corporate Garage</a>
+            <div class="collapse navbar-collapse" id="navbarExample">
+                <ul class="navbar-nav ml-auto">
+                    <li class="nav-item active">
+                        <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">About</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Services</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Contact</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Page Content -->
+    <div class="container">
+
+        <!-- User Form -->
+        <h1 class="my-4">Login <small></small></h1>
+        <br>
+        <form>
+                            User name:<br>
+                            <input type="text" name="userid"><br>
+                            <button type="button">Login</button>
+        </form>
+
+        <!-- /.row -->
+        <br>
+        <br>
+
+
+    </div>
+    <!-- /.container -->
+
+    <!-- Footer -->
+    <footer class="py-5 bg-inverse">
+        <div class="container">
+            <p class="m-0 text-center text-white">Copyright &copy; Your Website 2017</p>
+        </div>
+        <!-- /.container -->
+    </footer>
+
+    <script>
+    var curr_page = 1;
+    var size = 0;
+    API.Projects.getAll(function(result)
+    {
+         size = result.length;
+         //size = 1 * result;
+         if(size <= 6)
+         {
+           console.log("Size is " + size);
+           document.getElementsByClassName("page-item")[1].classList.add("dissapear");
+         }
+    });
+
+    function getProjects(page_id)
+    {
+       var more_projects = true;
+       API.Users.getById(function(result)
+          {
+            var tmp = result;
+            console.log(tmp);
+            for(var i = 0; i < tmp.length; ++i)
+            {
+              document.getElementsByClassName("card")[i].classList.add("show");
+              var element_img = document.getElementsByClassName("card-img-top")[i%6];
+              var element_title = document.getElementsByClassName("card-title")[i%6];
+              var element_description = document.getElementsByClassName("card-text")[i%6];
+              var element_url = document.getElementsByClassName("project_url")[i%6];
+              element_img.src = tmp[i]["thumbnail"];
+              element_title.innerText = tmp[i]["name"];
+              element_description.innerText = tmp[i]["description"];
+              element_url.href = tmp[i]["website"];
+            }
+            if(tmp.length < 6 || size <= 6 * page_id)
+            {
+              var nextBtn = document.getElementsByClassName("page-item")[1];
+              nextBtn.classList.add("dissapear");
+            }
+          });
+       return more_projects;
+  }
+  getProjects(curr_page);
+
+
+  </script>
+</body>
+
+</html>
