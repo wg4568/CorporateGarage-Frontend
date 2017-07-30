@@ -10,7 +10,7 @@
 
     <title>CorporateGarage - User Login</title>
 
-    <link href="css/bootstrap.css" rel="stylesheet">
+    <link href="css/bootstrapsearch.css" rel="stylesheet">
     <link href="css/login.css" rel="stylesheet">
 
     <script src="js/jquery.js"></script>
@@ -68,9 +68,12 @@
         <br>
         <form>
                             User name:<br>
-                            <input type="text" name="userid"><br>
-                            <button type="button">Login</button>
+                            <input type="text" style="width: 300px" class="form-control" id="userid"><br><br>
+                            <button type="button" class="btn" onclick="login()">Login</button>
         </form>
+
+		<br>
+		<h3><font color="red" id="error"></font></h3>
 
         <!-- /.row -->
         <br>
@@ -83,55 +86,28 @@
     <!-- Footer -->
     <footer class="py-5 bg-inverse">
         <div class="container">
-            <p class="m-0 text-center text-white">Copyright &copy; Your Website 2017</p>
+            <p class="m-0 text-center text-white"></p>
         </div>
         <!-- /.container -->
     </footer>
 
     <script>
-    var curr_page = 1;
-    var size = 0;
-    API.Projects.getAll(function(result)
-    {
-         size = result.length;
-         //size = 1 * result;
-         if(size <= 6)
-         {
-           console.log("Size is " + size);
-           document.getElementsByClassName("page-item")[1].classList.add("dissapear");
-         }
-    });
-
-    function getProjects(page_id)
-    {
-       var more_projects = true;
-       API.Users.getById(function(result)
-          {
-            var tmp = result;
-            console.log(tmp);
-            for(var i = 0; i < tmp.length; ++i)
-            {
-              document.getElementsByClassName("card")[i].classList.add("show");
-              var element_img = document.getElementsByClassName("card-img-top")[i%6];
-              var element_title = document.getElementsByClassName("card-title")[i%6];
-              var element_description = document.getElementsByClassName("card-text")[i%6];
-              var element_url = document.getElementsByClassName("project_url")[i%6];
-              element_img.src = tmp[i]["thumbnail"];
-              element_title.innerText = tmp[i]["name"];
-              element_description.innerText = tmp[i]["description"];
-              element_url.href = tmp[i]["website"];
-            }
-            if(tmp.length < 6 || size <= 6 * page_id)
-            {
-              var nextBtn = document.getElementsByClassName("page-item")[1];
-              nextBtn.classList.add("dissapear");
-            }
-          });
-       return more_projects;
-  }
-  getProjects(curr_page);
-
-
+	function login() {
+		var username = $("#userid").val();
+		API.Users.getAll(function(res) {
+			var user;
+			res.forEach(function(usr) {
+				if (usr.user_name == username) {
+					user = usr;
+				}
+			});
+			if (user == null) {
+				$("#error").text("No such username");
+			} else {
+				window.location.href = "search.html?uuid=" + user.id;
+			}
+		});
+	}
   </script>
 </body>
 

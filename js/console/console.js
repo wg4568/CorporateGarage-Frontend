@@ -6,7 +6,7 @@ function get(name){
 var ICON_REF = {user: "fa-user"}
 
 var USER_ID = parseInt(get("uuid"));
-var PROJECT_ID = parseInt(get("project"))
+var PROJECT_ID = parseInt(get("project"));
 var ALERTS = []
 
 var USER;
